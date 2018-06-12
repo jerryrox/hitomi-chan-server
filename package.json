@@ -1,0 +1,19 @@
+{
+  "name": "reactive-hitomi-server",
+  "version": "1.0.0",
+  "description": "My own hitomi cache server for better performance.",
+  "main": "server.js",
+  "author": "ReisenMoe",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.1.5"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "startDev": "export LOG_DEV=true && node server.js"
+  }
+}
