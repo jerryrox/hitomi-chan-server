@@ -6,10 +6,10 @@ const router = express.Router();
 let Gallery = require('../models/gallery');
 
 router.get('/', (req, res) => {
-    res.send("sex");
+    res.send("ecchi");
 });
 
-router.get('/sex', (req, res) => {
+router.get('/ecchi', (req, res) => {
     res.send("Caching started... See console for details.");
     startCaching();
 });
