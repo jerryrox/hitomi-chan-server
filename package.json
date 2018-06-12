@@ -1,7 +1,7 @@
 {
   "name": "reactive-hitomi-server",
   "version": "1.0.0",
-  "description": "My own hitomi cache server for better performance.",
+  "description": "Backend server that caches hitomi.la galleries to local database.",
   "main": "server.js",
   "author": "ReisenMoe",
   "license": "MIT",
