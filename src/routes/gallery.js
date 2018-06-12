@@ -41,7 +41,7 @@ function findInGallery(query, sort, page, callback) {
 function buildQuery(query) {
     let findQuery = {};
 
-    if(query.type) findQuery.type = makeFilter(query.type);
+    if(query.type) findQuery.type = makeFilter(query.type, true);
     if(query.id) findQuery.id = makeFilter(query.id, true);
     if(query.c) findQuery.c = makeFilter(query.c);
     if(query.n) findQuery.n = makeFilter(query.n);
