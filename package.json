@@ -1,5 +1,5 @@
 {
-  "name": "reactive-hitomi-server",
+  "name": "hitomi-chan-server",
   "version": "1.0.0",
   "description": "Backend server that caches hitomi.la galleries to local database.",
   "main": "server.js",
