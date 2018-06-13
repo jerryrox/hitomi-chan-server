@@ -4,7 +4,22 @@ const router = express.Router();
 
 let Gallery = require('../models/gallery');
 
-const itemsPerPage = 30;
+const minItemsPerPage = 1;
+const defaultItemsPerPage = 30;
+const maxItemsPerPage = 100;
+
+/**
+ * Returns the number of items to return on query result.
+ * @returns {number}
+ */
+function getItemCount(count) {
+    count = (count ? Number.parseInt(count) : defaultItemsPerPage);
+    if(count < minItemsPerPage)
+        return minItemsPerPage;
+    else if(count > maxItemsPerPage)
+        return maxItemsPerPage;
+    return count;
+}
 
 function getErrorResponse() {
     return {
@@ -20,60 +35,86 @@ function getSuccessResponse(data) {
 }
 
 /**
- * Executes find query.
- * @param {Object} query 
- * @param {Object} sort 
- * @param {number} page 
- * @param {(err: Error, result: any[]) => void} callback 
- */
-function findInGallery(query, sort, page, callback) {
-    Gallery.find(query)
-        .sort(sort)
-        .skip(page * itemsPerPage)
-        .limit(itemsPerPage)
-        .exec(callback);
-}
-
-/**
  * Builds a query object for finding entries.
  * @param {Object} query 
  */
 function buildQuery(query) {
-    let findQuery = {};
+    let docQuery;
 
-    if(query.type) findQuery.type = makeFilter(query.type, true);
-    if(query.id) findQuery.id = makeFilter(query.id, true);
-    if(query.c) findQuery.c = makeFilter(query.c);
-    if(query.n) findQuery.n = makeFilter(query.n);
-    if(query.p) findQuery.p = makeFilter(query.p);
-    if(query.t) findQuery.t = makeFilter(query.t);
-    if(query.g) findQuery.g = makeFilter(query.g);
-    if(query.l) findQuery.l = makeFilter(query.l);
-    if(query.a) findQuery.a = makeFilter(query.a);
+    // If id is specified, it only returns a single result.
+    if(query.id) {
+        let condition = { id: query.id };
+        docQuery = Gallery.findOne(condition);
 
-    return findQuery;
+        logDev(`buildQuery with condition: ${JSON.stringify(condition)}`);
+    }
+    else {
+        let conditions = [];
+        docQuery = Gallery.find({});
+
+        addCondition(conditions, "type", query.type);
+        addCondition(conditions, "c", query.c);
+        addCondition(conditions, "n", query.n);
+        addCondition(conditions, "p", query.p);
+        addCondition(conditions, "t", query.t);
+        addCondition(conditions, "g", query.g);
+        addCondition(conditions, "l", query.l);
+        addCondition(conditions, "a", query.a);
+        if(conditions.length > 0)
+            docQuery.and(conditions);
+
+        logDev(`buildQuery with conditions: ${JSON.stringify(conditions)}`);
+    }
+    return docQuery;
 }
 
 /**
- * Returns an object for filtering data.
- * @param {any} val 
- * @param {Boolean} exact
+ * Attaches additional options to perform after query.
  */
-function makeFilter(val, exact = false) {
+function attachOptions(docQuery, sort, page, count) {
+    docQuery.sort(sort)
+        .skip(page * count)
+        .limit(count);
+}
+
+/**
+ * Adds a search condition object to specified array with val.
+ * @param {Array} conditions
+ * @param {string} key
+ * @param {string} val
+ */
+function addCondition(conditions, key, val) {
     if(!val)
-        return undefined;
-    if(exact)
-        return val;
-    return {$regex: new RegExp(val), $options: "i"};
+        return;
+    
+    // val is formatted as following:
+    // URI_ENCODED_VALUE|URI_ENCODED_VALUE|...
+    // The | character acts as the separator for each value.
+    let encodedVals = val.split('|');
+    if(!encodedVals || encodedVals.length === 0)
+        return;
+    
+    let searchObjects = encodedVals.map(encodedVal => {
+        return {
+            [key]: {
+                $regex: new RegExp(decodeURIComponent(encodedVal)),
+                $options: "i"
+            }
+        };
+    });
+    searchObjects.forEach(obj => {
+        conditions.push(obj);
+    });
 }
 
 router.get('/', (req, res) => {
-    let query = req.query;
-    let page = (query.page || 1) - 1;
-    let findQuery = buildQuery(query);
-    logDev(findQuery);
+    let page = (req.query.page || 1) - 1;
+    let count = getItemCount(req.query.count);
 
-    findInGallery(findQuery, {id: -1}, page, (err, result) => {
+    var docQuery = buildQuery(req.query);
+    attachOptions(docQuery, {id: -1}, page, count);
+
+    docQuery.exec((err, result) => {
         if(err) {
             console.log(`/gallery - Error: ${JSON.stringify(err)}`);
             res.send(getErrorResponse());
