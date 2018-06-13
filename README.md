@@ -20,7 +20,7 @@ There is currently no known public API to access data easily from hitomi. Howeve
 
 ## Planned
 * Caching gallery data automatically every interval hours.
-* Provide better query experience for REST API.
+* Returning total search count w. pagination.
 
 ## How to use
 ### Starting the server
@@ -42,19 +42,46 @@ yarn startDev
 /gallery
 
 /* Description */
-Returns 30 objects sorted by gallery id, descending.
+Returns whether the query was successful and entries filtered by queries, sorted by gallery id in descending order.
 
 /* Supported queries */
+id = (Gallery id)
+
 page = (Used for pagination)
-type = (Exact match, Types of gallery ("manga", "doujinshi", "gamecg", "artistcg"))
-id = (Exact match, Gallery id)
-c = (Inclusive match, Character name)
-n = (Inclusive match, Gallery name)
-p = (Inclusive match, Series name)
-t = (Inclusive match, Tags)
-g = (Inclusive match, Group name)
-l = (Inclusive match, Language)
-a = (Inclusive match, Artist name)
+count = (Max number of entries to return in a single page. You can set the default, min, max values in src/routes/gallery.js)
+type = (Types of gallery ("manga", "doujinshi", "gamecg", "artistcg"))
+c = (Character name)
+n = (Gallery name)
+p = (Series name)
+t = (Tags)
+g = (Group name)
+l = (Language)
+a = (Artist name)
+
+/* Query logics */
+If "id" is specified {
+  All other options are ignored.
+  Only one entry with matching id will be returned.
+}
+
+If "page" is specified {
+  The page'th group with at most "count" items will be returned.
+}
+
+If "count" is specified {
+  The max "count" results will be returned in a single page.
+}
+
+If others are specified {
+  All parameters are evaluated within an "and" condition.
+  Each parameter can have multiple values, separated by '|' character.
+  All values in the parameters must be encoded with encodeURIComponent function.
+  All entries (paginated) matching the condition will be returned.
+}
+
+If no query is specifid {
+  First page with defalut count of entries will be returned.
+}
 ```
     
 ```
