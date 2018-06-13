@@ -1,4 +1,4 @@
-const isDevLog = process.env.LOG_DEV;
+const isDevLog = Boolean(process.env.LOG_DEV);
 
 module.exports = function(message) {
     if(isDevLog)
