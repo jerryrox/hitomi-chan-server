@@ -1,0 +1,3 @@
+[submodule "src/hitomi-chan-utility"]
+	path = src/hitomi-chan-utility
+	url = https://github.com/jerryrox/hitomi-chan-utility
