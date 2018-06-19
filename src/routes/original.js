@@ -9,13 +9,11 @@ router.get("/:id", (req, res) => {
     const id = parseInt(req.params.id);
 
     if(!isParamIdValid(id)) {
-        res.send(response.getFailResponse("id must be an integer value!"));
+        res.send(response.getInvalidGalleryIdResponse());
         return;
     }
 
-    res.send(response.getSuccessResponse({
-        link: url.getGalleryUrl(req.params.id)
-    }));
+    res.send(response.getSuccessResponse(url.getGalleryUrl(req.params.id)));
 });
 
 module.exports = router;

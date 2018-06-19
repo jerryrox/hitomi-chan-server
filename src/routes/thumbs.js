@@ -11,13 +11,13 @@ router.get("/big/:id", (req, res) => {
     const id = parseInt(req.params.id);
 
     if(!isParamIdValid(id)) {
-        res.send(response.getFailResponse("id must be an integer value!"));
+        res.send(response.getInvalidGalleryIdResponse());
         return;
     }
 
     requestPageInfo(id, (pages) => {
         if(pages === null || pages.length === 0) {
-            res.status(404).send();
+            response.sendNotFoundResponse(res);
             return;
         }
 
@@ -30,7 +30,7 @@ router.get("/small/:id/:fileName", (req, res) => {
     const fileName = req.params.fileName;
 
     if(!isParamIdValid(id)) {
-        res.send(response.getFailResponse("id must be an integer value!"));
+        res.send(response.getInvalidGalleryIdResponse());
         return;
     }
 
