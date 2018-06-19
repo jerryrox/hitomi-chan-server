@@ -23,8 +23,15 @@ app.use(bodyParser.json());
 // Express routing
 let cacheRoute = require("./src/routes/cache");
 let galleryRoute = require("./src/routes/gallery");
+let originalRoute = require("./src/routes/original");
+let readRoute = require("./src/routes/read");
+let thumbsRoute = require("./src/routes/thumbs");
+
 app.use("/cache", cacheRoute);
 app.use("/gallery", galleryRoute);
+app.use("/original", originalRoute);
+app.use("/read", readRoute);
+app.use("/thumbs", thumbsRoute);
 
 // Start listen
 app.listen(portNumber, () => {
