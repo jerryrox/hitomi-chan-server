@@ -2,6 +2,10 @@ const logDev = require("../logDev");
 const express = require('express');
 const router = express.Router();
 
+const dbClient = require("../dbClient");
+const webClient = require("../webClient");
+const { isParamIdValid } = require("../utils");
+
 let Gallery = require('../models/gallery');
 
 const minItemsPerPage = 1;
@@ -88,9 +92,9 @@ function addCondition(conditions, key, val) {
         return;
     
     // val is formatted as following:
-    // URI_ENCODED_VALUE|URI_ENCODED_VALUE|...
-    // The | character acts as the separator for each value.
-    let encodedVals = val.split('|');
+    // URI_ENCODED_VALUE,URI_ENCODED_VALUE,...
+    // The , character acts as the separator for each value.
+    let encodedVals = val.split(',');
     if(!encodedVals || encodedVals.length === 0)
         return;
     
