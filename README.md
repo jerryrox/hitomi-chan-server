@@ -1,4 +1,4 @@
-# reactive-hitomi-server
+# hitomi-chan-server
 Backend server that caches hitomi.la galleries to local database.
 
 ## Environment
