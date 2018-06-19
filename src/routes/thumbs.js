@@ -9,7 +9,6 @@ const { isParamIdValid } = require("../utils");
 
 router.get("/big/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    const fileName = req.params.fileName;
 
     if(!isParamIdValid(id)) {
         res.send(response.getFailResponse("id must be an integer value!"));
