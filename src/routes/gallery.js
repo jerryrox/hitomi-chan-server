@@ -124,4 +124,8 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get("/:id/pages", (req, res) => {
+    res.send("Not yet implemented");
+});
+
 module.exports = router;

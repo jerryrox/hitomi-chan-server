@@ -3,12 +3,12 @@ const router = express.Router();
 
 const response = require("../response");
 const { url } = require("../hitomi-chan-utility");
+const { isParamIdValid } = require("../utils");
 
 router.get("/:id", (req, res) => {
     const id = parseInt(req.params.id);
 
-    // Invalid param
-    if(id <= 0 || isNaN(id)) {
+    if(!isParamIdValid(id)) {
         res.send(response.getFailResponse("id must be an integer value!"));
         return;
     }
