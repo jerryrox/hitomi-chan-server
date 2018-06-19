@@ -17,11 +17,15 @@ There is currently no known public API to access data easily from hitomi. Howeve
 
 ## Features
 * Caching all galleries in hitomi server to local database.
-* Providing a simple REST API that returns search results based on query strings.
+* Search for galleries with a query string.
+* Get galleries' original urls.
+* Fetching big and small thumbnails using pipe.
 
 ## Planned
 * Caching gallery data automatically every interval hours.
 * Returning total search count w. pagination.
+* Provide manga reader using server-side rendering.
+* Provide video player. (I didn't know hitomi contains anime-type galleries too)
 
 ## How to use
 ### Starting the server
