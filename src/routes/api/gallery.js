@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const dbClient = require("../dbClient");
-const webClient = require("../webClient");
-const response = require("../response");
-const { isParamIdValid } = require("../utils");
+const dbClient = require("../../dbClient");
+const webClient = require("../../webClient");
+const response = require("../../response");
+const { isParamIdValid } = require("../../utils");
 
 const minItemsPerPage = 1;
 const defaultItemsPerPage = 30;

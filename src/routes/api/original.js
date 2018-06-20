@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const response = require("../response");
-const dbClient = require("../dbClient");
-const { url } = require("../hitomi-chan-utility");
-const { isParamIdValid } = require("../utils");
+const response = require("../../response");
+const dbClient = require("../../dbClient");
+const { url } = require("../../hitomi-chan-utility");
+const { isParamIdValid } = require("../../utils");
 
 router.get("/anime/:id", (req, res) => {
     const id = parseInt(req.params.id);

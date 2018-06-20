@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const request = require("request");
 
-const { isParamIdValid } = require("../utils");
-const { url } = require("../hitomi-chan-utility");
-const response = require("../response");
-const dbClient = require("../dbClient");
+const { isParamIdValid } = require("../../utils");
+const { url } = require("../../hitomi-chan-utility");
+const response = require("../../response");
+const dbClient = require("../../dbClient");
 
 router.get("/:id", (req, res) => {
     const id = parseInt(req.params.id);

@@ -21,21 +21,21 @@ const app = express();
 app.use(bodyParser.json());
 
 // Express routing
-let cacheRoute = require("./src/routes/cache");
-let galleryRoute = require("./src/routes/gallery");
-let originalRoute = require("./src/routes/original");
-let readRoute = require("./src/routes/read");
-let thumbsRoute = require("./src/routes/thumbs");
-let pageRoute = require("./src/routes/page");
-let videoRoute = require("./src/routes/video");
+let cacheRoute = require("./src/routes/api/cache");
+let galleryRoute = require("./src/routes/api/gallery");
+let originalRoute = require("./src/routes/api/original");
+let thumbsRoute = require("./src/routes/api/thumbs");
+let pageRoute = require("./src/routes/api/page");
+let videoRoute = require("./src/routes/api/video");
 
-app.use("/cache", cacheRoute);
-app.use("/gallery", galleryRoute);
-app.use("/original", originalRoute);
-app.use("/read", readRoute);
-app.use("/thumbs", thumbsRoute);
-app.use("/page", pageRoute);
-app.use("/video", videoRoute);
+app.use("/api/cache", cacheRoute);
+app.use("/api/gallery", galleryRoute);
+app.use("/api/original", originalRoute);
+app.use("/api/thumbs", thumbsRoute);
+app.use("/api/page", pageRoute);
+app.use("/api/video", videoRoute);
+
+
 
 // Start listen
 app.listen(portNumber, () => {

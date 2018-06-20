@@ -2,10 +2,10 @@ const express = require("express");
 const request = require("request");
 const router = express.Router();
 
-const response = require("../response");
-const { requestPageInfo } = require("../webClient");
-const { url } = require("../hitomi-chan-utility");
-const { isParamIdValid } = require("../utils");
+const response = require("../../response");
+const { requestPageInfo } = require("../../webClient");
+const { url } = require("../../hitomi-chan-utility");
+const { isParamIdValid } = require("../../utils");
 
 router.get("/big/:id", (req, res) => {
     const id = parseInt(req.params.id);

@@ -1,9 +1,9 @@
 const axios = require("axios");
-const logDev = require("../logDev");
+const logDev = require("../../logDev");
 const express = require('express');
 const router = express.Router();
 
-let Gallery = require('../models/gallery');
+let Gallery = require('../../models/gallery');
 
 router.get('/', (req, res) => {
     res.send("ecchi");
