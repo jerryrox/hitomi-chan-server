@@ -26,12 +26,16 @@ let galleryRoute = require("./src/routes/gallery");
 let originalRoute = require("./src/routes/original");
 let readRoute = require("./src/routes/read");
 let thumbsRoute = require("./src/routes/thumbs");
+let pageRoute = require("./src/routes/page");
+let videoRoute = require("./src/routes/video");
 
 app.use("/cache", cacheRoute);
 app.use("/gallery", galleryRoute);
 app.use("/original", originalRoute);
 app.use("/read", readRoute);
 app.use("/thumbs", thumbsRoute);
+app.use("/page", pageRoute);
+app.use("/video", videoRoute);
 
 // Start listen
 app.listen(portNumber, () => {

@@ -47,22 +47,38 @@ function attachOptions(docQuery, sort, page, count) {
 
 /**
  * Executes specified query and returns result via callback.
- * Returns null data if unsuccessful.
- * @param {(data: any) => void}
+ * Returns undefined data if an error occured.
+ * Returns null data if no data was found.
+ * @param {(data: any) => void} callback
  */
 function executeQuery(docQuery, callback) {
     docQuery.exec((err, result) => {
         if(err) {
             console.log(`dbClient.executeQuery - Error: ${JSON.stringify(err)}`);
-            callback(null);
+            callback(undefined);
             return;
         }
+
+        if(result !== null && !Array.isArray(result))
+            result = [result];
+
         callback(result);
     });
+}
+
+/**
+ * A convenience method that finds a single gallery with specified id.
+ * @param {(data: any) => void} callback
+ */
+function findGalleryById(id, callback) {
+    let docQuery = buildSearchQuery({id});
+    executeQuery(docQuery, callback);
 }
 
 module.exports = {
     buildSearchQuery,
     attachOptions,
-    executeQuery
+    executeQuery,
+
+    findGalleryById
 };

@@ -31,30 +31,12 @@ router.get('/', (req, res) => {
     dbClient.attachOptions(docQuery, {id: -1}, page, count);
 
     dbClient.executeQuery(docQuery, (data) => {
-        if(data === null) {
+        if(data === undefined) {
             res.send(response.getQueryErrorResponse());
             return;
         }
         
         res.send(response.getSuccessResponse(data));
-    });
-});
-
-router.get("/:id/pages", (req, res) => {
-    const id = parseInt(req.params.id);
-
-    if(!isParamIdValid(id)) {
-        res.send(response.getInvalidGalleryIdResponse());
-        return;
-    }
-
-    webClient.requestPageInfo(id, (pages) => {
-        if(pages === null) {
-            response.sendNotFoundResponse(res);
-            return;
-        }
-
-        res.send(response.getSuccessResponse(pages));
     });
 });
 
