@@ -34,7 +34,10 @@ router.get("/:id/:pageName", (req, res) => {
         return;
     }
 
-    request(url.getPageFileUrl(id, pageName)).pipe(res);
+    response.pipeImage(
+        url.getPageFileUrl(id, pageName),
+        res
+    );
 });
 
 module.exports = router;

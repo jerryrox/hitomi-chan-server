@@ -26,7 +26,10 @@ router.get("/:id", (req, res) => {
         }
 
         let galleryName = data[0].n;
-        request(url.getAnimeFileUrl(galleryName)).pipe(res);
+        response.pipeImage(
+            url.getAnimeFileUrl(galleryName),
+            res
+        );
     });
 });
 

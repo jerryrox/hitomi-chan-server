@@ -1,3 +1,5 @@
+const request = require("request");
+
 /**
  * Returns a json object for failed response.
  */
@@ -39,6 +41,13 @@ function sendNotFoundResponse(res) {
     res.status(404).send();
 }
 
+/**
+ * Response piping preset: Image
+ */
+function pipeImage(imageUrl, res) {
+    request(imageUrl).pipe(res);
+}
+
 module.exports = {
     getFailResponse,
     getInvalidGalleryIdResponse,
@@ -47,4 +56,6 @@ module.exports = {
     getSuccessResponse,
 
     sendNotFoundResponse,
+
+    pipeImage,
 };
