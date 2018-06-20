@@ -15,6 +15,6 @@
   },
   "scripts": {
     "start": "node server.js",
-    "startDev": "export LOG_DEV=true && node server.js"
+    "dev": "export DEV_MODE=true && nodemon server.js"
   }
 }

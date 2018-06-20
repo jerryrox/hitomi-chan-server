@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const portNumber = 4000;
 
@@ -19,8 +20,10 @@ db.on("error", function(err) {
 // Setup express
 const app = express();
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Express routing
+// API
 let cacheRoute = require("./src/routes/api/cache");
 let galleryRoute = require("./src/routes/api/gallery");
 let originalRoute = require("./src/routes/api/original");
@@ -35,7 +38,10 @@ app.use("/api/thumbs", thumbsRoute);
 app.use("/api/page", pageRoute);
 app.use("/api/video", videoRoute);
 
-
+// View
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 // Start listen
 app.listen(portNumber, () => {
