@@ -6,13 +6,15 @@ import urls from '../../urls';
 const Container = styled.div`
     position: relative;
     width: 100%;
-    height: 100%;
+    flex: 1;
 `;
 
 const Background = styled.div`
-    position: relative;
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     background-color: #000;
     display: flex;
     justify-content: center;
@@ -30,7 +32,13 @@ const ImageDisplayer = ({onPageClick, galleryId, pageName, fitToHeight}) => (
                     width: (fitToHeight ? "auto" : "100%"),
                     height: (fitToHeight ? "100%" : "auto"),
                     maxWidth: "100%",
-                    objectFit: "contain"
+                    objectFit: "contain",
+                    userDrag: "none",
+                    userSelect: "none",
+                    MozUserSelect: "none",
+                    WebkitUserDrag: "none",
+                    WebkitUserSelect: "none",
+                    MsUserSelect: "none",
                 }}
             />
         </Background>

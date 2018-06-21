@@ -19,14 +19,13 @@ const ReadContainer = styled.div`
 
 const DisplayerContainer = styled.div`
     width: 100%;
-    height: calc(100% - 40px);
+    height: 100%;
+    display:flex;
+    flex-wrap: no-wrap;
+    flex-direction: column;
 `;
 
 class Read extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount = () => {
         this.initialize();
@@ -60,6 +59,10 @@ class Read extends React.Component {
             this.navigateBackward();
         else
             this.navigateForward();
+    };
+
+    onSelectPageNumber = (e) => {
+        this.setPageNumber(Number(e.target.value));
     };
 
     initialize = () => {
@@ -133,6 +136,7 @@ class Read extends React.Component {
     }
 
     navigateForward = () => {
+        console.log(this.props.pageNum)
         this.setPageNumber(this.props.pageNum + 1);
     };
 
@@ -171,6 +175,7 @@ class Read extends React.Component {
                     onFit = { this.setFitToHeight }
                     onFill = { this.setFitToWidth }
                     onFull = { this.setFullScreen }
+                    onSetPageNum = { this.onSelectPageNumber }
                     pageNumber = { pageNum }
                     pageCount = { pages.length }
                     fitToHeight = { fitToHeight }
