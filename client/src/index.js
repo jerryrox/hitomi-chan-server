@@ -1,6 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
+import 'font-awesome/css/font-awesome.min.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import reducers from './reducers';
+
+import { BrowserRouter } from 'react-router-dom'
+
+const store = createStore(
+    reducers,
+    process.env.NODE_ENV === "production" ? null : window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>,
+    document.getElementById('root')
+);

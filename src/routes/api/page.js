@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const request = require("request");
 
 const { isParamIdValid } = require("../../utils");
 const { url } = require("../../hitomi-chan-utility");
