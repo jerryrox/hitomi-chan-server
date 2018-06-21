@@ -9,10 +9,16 @@ import reducers from './reducers';
 
 import { BrowserRouter } from 'react-router-dom'
 
-const store = createStore(
-    reducers,
-    process.env.NODE_ENV === "production" ? null : window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+let store;
+if(process.env.NODE_ENV === "production") {
+    store = createStore(reducers);
+}
+else {
+    store = createStore(
+        reducers,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
+}
 
 ReactDOM.render(
     <Provider store={store}>

@@ -37,6 +37,9 @@ app.use("/api/original", originalRoute);
 app.use("/api/thumbs", thumbsRoute);
 app.use("/api/page", pageRoute);
 app.use("/api/video", videoRoute);
+app.use("/api/*", (req, res) => {
+    res.send(`Cannot ${req.method} ${req.path}`);
+});
 
 // View
 app.get("*", (req, res) => {
