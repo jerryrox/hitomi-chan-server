@@ -1,6 +1,7 @@
 const axios = require("axios");
 const logDev = require("../../logDev");
 const express = require('express');
+const url = require ("../../hitomi-chan-utility/url");
 const router = express.Router();
 
 let Gallery = require('../../models/gallery');
@@ -18,7 +19,7 @@ function startCaching() {
     console.log("Started caching.");
     findJsonCount((err, count) => {
         if(err) {
-            console.log(`Error while fetching json count: ${JSON.stringify(err)}`);
+            console.log(`Error while fetching json count: ${err}`);
             return;
         }
 
@@ -42,7 +43,7 @@ function initCaching(totalJsonCount) {
  */
 function findJsonCount(callback) {
     console.log("Finding json count...");
-    axios.get("https://hitomi.la/searchlib.js")
+    axios.get(url.getSearchlibJsUrl())
         .then(res => {
             var pattern = /number_of_gallery_jsons\s?=\s?([0-9]+)/mg;
             var count = pattern.exec(res.data)[1];
@@ -80,7 +81,7 @@ function advanceToNextJson() {
  */
 function downloadJson() {
     console.log(`Downloading json index ${global.cacheIndex}...`);
-    axios.get(`https://hitomi.la/galleries${global.cacheIndex}.json`)
+    axios.get(url.getGalleryJson(global.cacheIndex))
         .then(res => {
             global.galleryChunk = res.data;
             console.log(`Found gallery chunk with count: ${global.galleryChunk.length}`);
