@@ -5,6 +5,8 @@ Backend server that caches hitomi.la galleries to local database.
 Server: NodeJS + Express
   
 Database: MongoDB
+  
+Cilent: React + Redux
 
 ## Motivation
 There is currently no known public API to access data easily from hitomi. However, there are few methods on achieving this with a bit of 'hack'.
