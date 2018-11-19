@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { ReadAction } from '../../actions';
 
+import urls from '../../urls';
 import api from '../../api';
+import imagePreloader from '../../ImagePreloader';
 import { requestFullScreen, tryParseInt } from '../../utils';
 
 import ImageDisplayer from './ImageDisplayer';
@@ -113,6 +115,14 @@ class Read extends React.Component {
         return this.props.pages.length;
     }
 
+    getPageName = (pageIndex) => {
+        var pages = this.props.pages;
+        if(pageIndex < 0 || pageIndex >= pages.length) {
+            return null;
+        }
+        return pages[pageIndex].name;
+    }
+
     setFitToHeight = () => {
         this.props.setFitMode(true);
     };
@@ -133,10 +143,18 @@ class Read extends React.Component {
         if(!this.getIsInitialized())
             return;
         this.props.setPageNum(pageNum);
+
+        // Cache up to 4 next pages
+        var { gallery, pageNum } = this.props;
+        imagePreloader.preload([
+            urls.getPageFileUrl(gallery.id, this.getPageName(pageNum-1)),
+            urls.getPageFileUrl(gallery.id, this.getPageName(pageNum)),
+            urls.getPageFileUrl(gallery.id, this.getPageName(pageNum+1)),
+            urls.getPageFileUrl(gallery.id, this.getPageName(pageNum+2)),
+        ]);
     }
 
     navigateForward = () => {
-        console.log(this.props.pageNum)
         this.setPageNumber(this.props.pageNum + 1);
     };
 
