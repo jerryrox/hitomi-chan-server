@@ -20,16 +20,44 @@ There is currently no known public API to access data easily from hitomi. Howeve
 * Search for galleries with a query string.
 * Get galleries' original urls.
 * Fetching big and small thumbnails using pipe.
+* Provides a client for reading manga in a browser.
 
 ## Planned
 * Caching gallery data automatically every interval hours.
 * Returning total search count w. pagination.
-* Provide manga reader using server-side rendering.
 * Provide video player. (I didn't know hitomi contains anime-type galleries too)
 
 ## How to use
+### Initial setup
+Firstly, you need to download the source codes (duh) by either cloning using git or simply downloading from [here](https://github.com/jerryrox/hitomi-chan-server)
+```
+git clone https://github.com/jerryrox/hitomi-chan-server
+```
+  
+Then you must install some dependencies as well.
+  Building the client application is optional, but it's recommended if you're going to use it.
+```
+(Go into your hitomi-chan-server directory)
+cd YOUR_HITOMI_CHAN_DIRECTORY
+
+(Install dependencies)
+yarn install
+
+(Setup hitomi-chan-utility)
+git submodule update --init
+
+(Go to client application)
+cd client
+
+(Install client dependencies)
+yarn install
+
+(Build the client)
+yarn build
+```
+
 ### Starting the server
-There are two scripts in package.json; one for normal startup and other with debug flag enabled. The debug mode simply outputs more verbose logs while performing certain tasks.
+There are two scripts in package.json; one for normal startup and other with debug flag enabled. The debug mode outputs more logs while performing certain tasks.
   
 Start with normal options
 ```
@@ -41,15 +69,28 @@ yarn start
 yarn startDev
 ```
   
+  Building the client application
+```
+From the hitomi-chan-server root directory:
+cd client
+yarn build
+```
+  
+### Customizing database
+By default, the server only indexes manga "id"s, which makes searching for other fields inefficient. You can change that behavior either manually through mongodb, or editing a portion of the code.
+  
+To edit the code, simply navigate to /src/models/gallery.js, and edit the following code to your needs.
+```
+schema.index({
+    id: -1
+});
+```
+  
+For the other method, you can easily do it by using other programs such as MongoDB Compass.
+  
 ### REST API
 ```
-/* Route */
-/gallery
-
-/* Description */
-Returns whether the query was successful and entries filtered by queries, sorted by gallery id in descending order.
-
-/* Supported queries */
+/* Query details for /api/gallery route */
 id = (Gallery id)
 
 page = (Used for pagination)
@@ -90,11 +131,30 @@ If no query is specifid {
 ```
     
 ```
-/* Route */
-/cache/ecchi
+/* Routes */
+(Client) Reading a manga with specified id.
+/gallery/read/{id}
+(Client) Watching a video with specified id.
+/gallery/watch/{id}
 
-/* Description */
-Manually starts the gallery caching process.
-You should take a look at the console to see current progress.
-Start the server with developer flag enabled to see detailed logs.
+(Server) Starting the caching process. Will be removed in future releases.
+/api/cache/ecchi
+(Server) Searching for a list of entries that matches the specified query. See above for more details about the query.
+/api/gallery?{query}
+(Server) Returns a JSON containing the original url to the manga of specified id.
+/api/original/{id}
+(Server) Returns a JSON containing the original url to the video of specified id.
+/api/original/anime/{id}
+(Server) Returns the cover page thumbnail of the manga of specified id.
+/api/thumbs/big/{id}
+(Server) Returns the large thumbnail of the manga of specified id and image file name.
+/api/thumbs/big/{id}/{imageName}
+(Server) Returns the small thumbnail of the manga of specified id and image file name.
+/api/thumbs/small/{id}/{imageName}
+(Server) Returns a JSON containing a list of page infos of the manga of specified id.
+/api/page/list/{id}
+(Server) Returns the original sized image of the manga's page of specified id and image file name.
+/api/page/{id}/{imageName}
+(Server) Returns the original movie file of the video of specified id.
+/api/video/{id}
 ```
